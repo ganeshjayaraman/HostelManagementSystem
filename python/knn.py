@@ -1,12 +1,14 @@
 from operator import itemgetter
 import numpy as np
 import os
+import pandas as pd
 #import matplolib.pyplot as plt
 import csv
-os.chdir("E:")
+
+os.chdir("C:\wamp\www\hostel\python")
 cities={'Chennai':1,'Madurai':2,'Trichy':3,'Coimbatore':4}
-dept={'CSE':1,'ECE':2,'MECH':3,'EEE':4}
-with open('E:\\samplehostel.csv','r') as f:
+dept={'cse':1,'ece':2,'mech':3,'eee':4}
+with open('C:\wamp\www\hostel\python\stduent_list.csv','r') as f:
     rowdata=[]
     reader=csv.reader(f)
     reader.next()
@@ -29,7 +31,6 @@ def EuclidDist(ins1,ins2,length):
         dist+=((ins1[i]-ins2[i])**2)
     return dist
 k=3
-alloted=[]
 #define k
 #get-data
 #print data
@@ -48,7 +49,6 @@ while len(data)!=0:
             neighbours.append(distance[h][2])
             temp.append(data[distance[h][2]])
         #print "asda",
-        #print temp
         alloted.append([data[0][0],data[neighbours[1]][0],data[neighbours[2]][0]])
         #del(data[neighbours[0]])
         #del(neighbours[0])
@@ -65,13 +65,25 @@ while len(data)!=0:
             print "  "
             del(neighbours[0])"""#allot rooms to k people and delete elements of neighbours and the element from data
     elif len(data)<=k:
+         
          l=[]
          for i in data:   
              l.append(i[0])
+         j=[]
+         if len(data)<k:
+             j=[0*(k-len(data))]
+         l=l+j
          alloted.append(l)
-         for n in data: 
-             data.remove(n)
+         for n in xrange(len(data)):
+             #data.remove(n)
+             del(data[0])
          #allot all people to the element and exit
+final=pd.DataFrame(alloted)
+final=final.replace(np.nan,0)
+final.columns=['Student_1','Student_2','Student_3']
+final.to_csv("MainHostelAllot.csv")
+
+
 
 
 

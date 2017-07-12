@@ -15,11 +15,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
 	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+		
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-  
-	
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+	<link href="{{ asset('resources/views/style.css') }}" rel="stylesheet">
+  	
     <style>
         body {
             font-family: 'Lato';
@@ -29,8 +33,8 @@
             margin-right: 6px;
         }
 		
-		#sortable { list-style-type: none; margin: 4px; padding: 3px;width:100px; }
-		#sortable li { margin:10px;  padding: 0.8em; padding-left: 1.0em; font-size: 1.2em;  }
+		.sortable { list-style-type: none; margin: 4px; padding: 3px;width:100px; }
+		.sortable li { margin:10px;  padding: 0.8em; padding-left: 1.0em; font-size: 1.2em;}		
     </style>
 </head>
 <body id="app-layout">

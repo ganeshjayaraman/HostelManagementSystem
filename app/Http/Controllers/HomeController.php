@@ -8,8 +8,11 @@ use Validator;
 use DB;
 use Carbon;
 use App\User;
+use App\students_room_info;
+use App\rooms_info;
 use App\mess;
 use Excel;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class HomeController extends Controller
 {
@@ -35,8 +38,11 @@ class HomeController extends Controller
     }
 	
 	public function room_allotment() {
-			$user = User::get();
-			dd($user);
+			$student_id = \Auth::user()->id;
+			$get = students_room_info::where('student_id', $student_id)->get()[0];
+			$get_info = rooms_info::where('id',$get->room_id)->get()[0];
+			
+			return view("students_room_info",compact("get","get_info"));
 	}
 	
 	public function room_allocate() {
@@ -69,9 +75,33 @@ class HomeController extends Controller
 	
 	public function get_room_allocation() {
 		
-		 $data_list = exec('python c:/wamp/www/python/knn1.py');
-		 
-		 dd($data_list);		 
+		 $path = 'C:\wamp\www\hostel\python\knn.py';
+		 system('python '. $path, $output);
+							
+			$data = \Excel::load('C:\wamp\www\hostel\python\MainHostelAllot.csv', function($reader) {
+			})->get();
+			
+			if(!empty($data) && $data->count()){				
+				foreach ($data as $key => $value) {
+					$count  = 0;
+					foreach($value as $k => $v) {																							
+						if(!($count)) {
+							$room_id = (int)$v+1;
+							$count++;
+						}
+						else {
+							$id = (int)$v;		
+							if($id > 0)
+								$insert[] = ['student_id' => $id, 'room_id' => $room_id];
+						}
+					}
+					
+					students_room_info::insert($insert);
+					$insert = [];
+				}				
+			}
+				 		 
+		return view("home")->with("errors","alloted successfully");
 	}
 	
 	public function mess_allotment() {

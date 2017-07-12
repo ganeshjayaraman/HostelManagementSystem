@@ -1,0 +1,41 @@
+.alert{
+	width : 40%;
+}
+
+th, td {
+    padding: 10px;
+}
+
+.page-heading {
+	margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: capitalize;
+    box-shadow: 4px 5px 2px -3px;
+	margin-bottom: 50px;
+}
+
+
+.panel-default .panel-heading {
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size:25px;
+	word-break:break-all;	
+	width : 100%;
+}
+.panel-body {
+	text-align : left;
+}
+
+.row {
+	width:100%;
+	margin-top:1%;	
+}
+
+#table-caption {
+	font-size : 30px;
+	color : #232B2B;
+}
+.room_no {
+	font-size : 30px;
+	color : #232B2B;
+}
