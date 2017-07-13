@@ -17,25 +17,14 @@
 	
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
-		
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-
+			
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css" rel="stylesheet">   
+	
 	<link href="{{ asset('resources/views/style.css') }}" rel="stylesheet">
-  	
-    <style>
-        body {
-            font-family: 'Lato';
-        }
-
-        .fa-btn {
-            margin-right: 6px;
-        }
-		
-		.sortable { list-style-type: none; margin: 4px; padding: 3px;width:100px; }
-		.sortable li { margin:10px;  padding: 0.8em; padding-left: 1.0em; font-size: 1.2em;}		
-    </style>
+  	    
 </head>
 <body id="app-layout">
     <nav class="navbar navbar-default navbar-static-top">
@@ -109,5 +98,58 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css" rel="stylesheet">   
+	
+	<script type="text/javascript">		
+		
+		$('ul.sortable').sortable({		
+        start: function(event, ui) {
+            var start_pos = ui.item.index();
+            ui.item.data('start_pos', start_pos);
+        },
+        change: function(event, ui) {
+            var start_pos = ui.item.data('start_pos');
+            var index = ui.placeholder.index();
+            if (start_pos < index) {
+                $('ul.sortable li:nth-child(' + index + ')').addClass('highlights');
+            } else {
+                $('ul.sortable li:eq(' + (index + 1) + ')').addClass('highlights');
+				//var x = $(this).sortable("serialize");
+			//	alert(x);
+			/*	$.ajax({
+		type: "POST",
+		url: "task1_list_page.php",
+			data:{data:x},
+			dataType: "html",
+		success: function(response) {
+		  $("#sortable").html(response);	
+            }
+        }
+		);*/
+		
+			}
+			},
+        update: function(event, ui) {
+            $('ul.sortable li').removeClass('highlights');
+        },
+		stop: function(event, ui) {
+        var data = "";
+		
+        $("ul.sortable li.ui-state-default").each(function(i, el){
+            var p = $(el).text().toLowerCase().replace(" ", "_");
+            data += p+"="+$(el).index()+",";			
+        });
+		
+        $("form[name='sorted_form'] > [name='new_order']").val(data.slice(0, -1));		
+		//console.log($("form[name='sorted_form'] > [name='new_order']").val);		
+        //$("form").submit();
+    }
+    });  
+		
+	</script>
 </body>
 </html>

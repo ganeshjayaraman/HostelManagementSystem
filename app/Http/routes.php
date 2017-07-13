@@ -52,5 +52,6 @@ Route::get('/room_allotment', 'HomeController@room_allotment');
 Route::get('/mess_allotment', 'HomeController@mess_allotment');
 Route::get('/room_allocate', 'HomeController@room_allocate');
 Route::get('/get_room_allocation', 'HomeController@get_room_allocation');
+Route::post('/sortable', 'HomeController@get_sorted_order');
 
 });

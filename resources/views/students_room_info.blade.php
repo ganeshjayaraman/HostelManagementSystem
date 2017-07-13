@@ -1,6 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
+
+
+@if (Session::has('errors'))			
+			@foreach($errors->all() as $error)
+				@if($error != "msg")
+					<ul class="alert alert-info alert-dismissable col-md-6 col-md-offset-1">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+						<li> {{ $error }} </li>
+					</ul>
+				@endif
+	@endforeach
+		
+@endif
+
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">

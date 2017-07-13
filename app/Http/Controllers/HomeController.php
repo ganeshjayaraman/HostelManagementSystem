@@ -9,6 +9,7 @@ use DB;
 use Carbon;
 use App\User;
 use App\students_room_info;
+use App\students_mess_info;
 use App\rooms_info;
 use App\mess;
 use Excel;
@@ -39,10 +40,14 @@ class HomeController extends Controller
 	
 	public function room_allotment() {
 			$student_id = \Auth::user()->id;
-			$get = students_room_info::where('student_id', $student_id)->get()[0];
+			$get = students_room_info::where('student_id', $student_id)->get();
+			
+			if($get->count() == 0)
+				return \Redirect::back();
+			$get = $get[0];
 			$get_info = rooms_info::where('id',$get->room_id)->get()[0];
 			
-			return view("students_room_info",compact("get","get_info"));
+			return view("students_room_info",compact("get","get_info"))->with("errors","alloted successfully");
 	}
 	
 	public function room_allocate() {
@@ -105,7 +110,45 @@ class HomeController extends Controller
 	}
 	
 	public function mess_allotment() {
-		$mess = mess::select('id')->get();		
-		return view("messsite",compact("mess"));
+		$student_id = \Auth::user()->id;
+		$get = students_mess_info::where('student_id', $student_id)->get();
+		
+		if($get->count() == 0) {
+			$mess = mess::select('id')->get();		
+			return view("messsite",compact("mess"));
+		}
+		else {
+			$get_info = [];
+			foreach($get as $g) {
+				$mess_id = (int)$g->mess_id;				
+				$get_info[] = mess::select('id','type')->where('id', $mess_id)->get()[0];
+			}
+			
+			return view("mess_info",compact("get_info"));
+		}
 	}
+	
+	public function get_sorted_order(Request $request) {
+		$data = $request->new_order;
+		$split = array($data);
+		$student_id = \Auth::user()->id;
+		
+		$i=0;$c=1;
+		while($i<=strlen($data)) { 
+			$mess_id = (int)$split[0][$i];
+			$insert[] = ['student_id' => $student_id, 'mess_id' => $mess_id];							
+			$i+=4;$c=$c+1;
+			} 	
+			students_mess_info::insert($insert);
+			$insert = [];
+		$get = students_mess_info::where('student_id', $student_id)->get();
+		
+		$get_info = [];
+			foreach($get as $g) {
+				$mess_id = (int)$g->mess_id;				
+				$get_info[] = mess::select('id','type')->where('id', $mess_id)->get()[0];
+			}
+		return view("mess_info",compact("get_info"))->with("errors","alloted successfully");
+	}
+			
 }
