@@ -132,22 +132,30 @@ class HomeController extends Controller
 		$data = $request->new_order;
 		$split = array($data);
 		$student_id = \Auth::user()->id;
-		
+		$insert = [];
 		$i=0;$c=1;
 		while($i<=strlen($data)) { 
 			$mess_id = (int)$split[0][$i];
-			$insert[] = ['student_id' => $student_id, 'mess_id' => $mess_id];							
-			$i+=4;$c=$c+1;
-			} 	
+			$seats_available = ((int)mess::where('id',$mess_id)->get()[0]->seats_available);			
+			if($seats_available > 0) {
+			$seats_available  -= 1;
+			mess::where('id',$mess_id)->update(['seats_available' => $seats_available]);
+			$insert[] = ['student_id' => $student_id, 'mess_id' => $mess_id];										
+			}
+			$i+=4;$c=$c+1;			
+		} 	
+		$get_info = [];
+		if($insert != "[]") {
 			students_mess_info::insert($insert);
 			$insert = [];
-		$get = students_mess_info::where('student_id', $student_id)->get();
+			$get = students_mess_info::where('student_id', $student_id)->get();
 		
-		$get_info = [];
+		
 			foreach($get as $g) {
 				$mess_id = (int)$g->mess_id;				
 				$get_info[] = mess::select('id','type')->where('id', $mess_id)->get()[0];
 			}
+		}
 		return view("mess_info",compact("get_info"))->with("errors","alloted successfully");
 	}
 			

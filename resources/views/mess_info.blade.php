@@ -15,13 +15,14 @@
 				<br />	<br />				
 				
 				<div class="page-heading">Your Preference & MESS DETAILS</div>
+				@if($get_info != null)
 					<table class="table table-hover table-bordered" style="font-family: 'Slabo 27px', serif;">
 						<thead>
 							<tr> 
 								<th>MESS_NO</th>
 								<th>MESS_TYPE</th>								
 							</tr>
-						</thead>
+						</thead>					
 					@foreach($get_info as $mess)
 						<tbody>							
 							<tr>
@@ -31,8 +32,10 @@
 						</tbody>
 					@endforeach
 					</table>
+				@else
+					<span />SORRY NO MESS ALLOTED FOR YOU.
 				</div>			
-					
+				@endif	
                 </div>
             </div>
         </div>

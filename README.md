@@ -35,5 +35,10 @@ HOSTEL MANAGEMENT SYSTEM :
 		
 		KNN is Implemented using PYTHON PANDAS as Core Library.
 		
-		This is Initial Work of 6 Hour Hackathon for Hostel Management System and we'll proceed forward to develop and complete 
-		this application.
+		WORKFLOW :
+			1. First create users using register form
+			2. Create an admin. (I hardcoded here for simplicity)
+			3. Get Room Allocation by clicking ROOM_ALLOCATE which will get the csv list of students and get the allotment of students and store it in DB. (Everything is done on a go.)
+			4. Now for each individual can view their alloted ROOMS by logging into the app.
+			5. They can also set the mess preference by dragging and dropping (Here i used numbers for simplicity).
+			6. Once they have done it they will be allocated their mess based on seats available.
