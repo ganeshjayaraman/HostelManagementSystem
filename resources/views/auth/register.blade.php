@@ -95,7 +95,9 @@
                             <label for="year" class="col-md-4 control-label">Year</label>
 
                             <div class="col-md-6">
-                                <input id="year" type="year" class="form-control" name="year" value="{{ old('year') }}">
+                                <select id="year"  class="form-control" name="year" > 										
+										<option value="1">1</option>																				
+								</select> 								
 
                                 @if ($errors->has('year'))
                                     <span class="help-block">

@@ -14,8 +14,7 @@ with open('C:\wamp\www\hostel\python\stduent_list.csv','r') as f:
     reader.next()
     for row in reader:
         rowdata.append(row)
-#rowdata=rowdata[1:]
-#print rowdata
+
 for i in xrange(len(rowdata)):
     rowdata[i]=rowdata[i][:-1]
 for i in rowdata:
@@ -24,16 +23,13 @@ for i in rowdata:
     i[2]=cities[i[2]]
 data=[]
 data=rowdata
-#print rowdata
+
 def EuclidDist(ins1,ins2,length):
     dist=0
     for i in xrange(length):
         dist+=((ins1[i]-ins2[i])**2)
     return dist
 k=3
-#define k
-#get-data
-#print data
 alloted=[]
 while len(data)!=0:
     distance=[]

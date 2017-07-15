@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class students_room_info extends Model
 {
@@ -21,5 +22,10 @@ class students_room_info extends Model
     protected $hidden = [
         'password', 'remember_token',
     ];
-
+	
+	public function getBack()
+    {
+        return $this->belongsTo('App\User', 'student_id');
+    }
+	
 }

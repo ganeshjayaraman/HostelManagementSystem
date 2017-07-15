@@ -140,13 +140,12 @@
         var data = "";
 		
         $("ul.sortable li.ui-state-default").each(function(i, el){
-            var p = $(el).text().toLowerCase().replace(" ", "_");
+			
+            var p = $(el).attr('value');			
             data += p+"="+$(el).index()+",";			
         });
 		
-        $("form[name='sorted_form'] > [name='new_order']").val(data.slice(0, -1));		
-		//console.log($("form[name='sorted_form'] > [name='new_order']").val);		
-        //$("form").submit();
+        $("form[name='sorted_form'] > [name='new_order']").val(data.slice(0, -1));			
     }
     });  
 		

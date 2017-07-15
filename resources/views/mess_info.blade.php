@@ -33,7 +33,7 @@
 					@endforeach
 					</table>
 				@else
-					<span />SORRY NO MESS ALLOTED FOR YOU.
+					<span />SORRY NO MESS ALLOTED FOR YOU BECAUSE SEATS ARE NOT AVAILABLE.
 				</div>			
 				@endif	
                 </div>

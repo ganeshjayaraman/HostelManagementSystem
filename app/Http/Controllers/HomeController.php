@@ -45,15 +45,24 @@ class HomeController extends Controller
 			if($get->count() == 0)
 				return \Redirect::back();
 			$get = $get[0];
+			$room_mates = students_room_info::select('student_id')->where('room_id', $get->room_id)->where('student_id','<>',$student_id)->get();						
+			$room_mate_list = [];	
+			if($room_mates->count() > 0) {
+				foreach($room_mates as $r) {
+					$room_mate[] = $r->student_id;
+				}			
+			$room_mate_list = User::whereIn('id',$room_mate)->get();
+			}			
 			$get_info = rooms_info::where('id',$get->room_id)->get()[0];
 			
-			return view("students_room_info",compact("get","get_info"))->with("errors","alloted successfully");
+			return view("students_room_info",compact("get","get_info","room_mate_list"))->with("errors","alloted successfully");
 	}
 	
 	public function room_allocate() {
-			$user = User::select('id','dept','city')->where('isadmin','0')->get();			
-			$userlist = $user->toArray();
-            				
+			$user = User::select('id','dept','city')->where('isadmin','0')->where('is_alloted','0')->get();				
+			if($user->count() > 0) {
+			$userlist = $user->toArray();					
+			
 			\Excel::create(" stduent_list", function($excel) use($userlist) {
 		
 			$getdata = [];
@@ -74,35 +83,47 @@ class HomeController extends Controller
 			});
 
 		})->download('csv');
+		}
 		
 		return view("home")->with("errors","exported successfully");
 	}
 	
 	public function get_room_allocation() {
 		
-		 $path = 'C:\wamp\www\hostel\python\knn.py';
-		 system('python '. $path, $output);
+			$path = 'C:\wamp\www\hostel\python\knn.py';
+			system('python '. $path, $output);
 							
 			$data = \Excel::load('C:\wamp\www\hostel\python\MainHostelAllot.csv', function($reader) {
 			})->get();
+		
+			$get_max = students_room_info::orderBy('room_id','desc')->get();
+			
+			if($get_max->count() > 0)
+				$get_max =	(int)$get_max->first()->room_id;
+			else 
+				$get_max =	0;
 			
 			if(!empty($data) && $data->count()){				
 				foreach ($data as $key => $value) {
 					$count  = 0;
-					foreach($value as $k => $v) {																							
+					foreach($value as $k => $v) {						
 						if(!($count)) {
 							$room_id = (int)$v+1;
 							$count++;
 						}
 						else {
 							$id = (int)$v;		
-							if($id > 0)
-								$insert[] = ['student_id' => $id, 'room_id' => $room_id];
+							if($id > 0) {
+								$ids[] = $id;
+								$insert[] = ['student_id' => $id, 'room_id' => $room_id+$get_max];
+							}
 						}
 					}
 					
 					students_room_info::insert($insert);
+					User::whereIn('id', $ids)->update(['is_alloted' => '1']);
 					$insert = [];
+					$ids = [];
 				}				
 			}
 				 		 
@@ -114,7 +135,7 @@ class HomeController extends Controller
 		$get = students_mess_info::where('student_id', $student_id)->get();
 		
 		if($get->count() == 0) {
-			$mess = mess::select('id')->get();		
+			$mess = mess::select('id','type')->get();			
 			return view("messsite",compact("mess"));
 		}
 		else {
@@ -129,8 +150,9 @@ class HomeController extends Controller
 	}
 	
 	public function get_sorted_order(Request $request) {
-		$data = $request->new_order;
+		$data = $request->new_order;		
 		$split = array($data);
+		
 		$student_id = \Auth::user()->id;
 		$insert = [];
 		$i=0;$c=1;
@@ -156,7 +178,7 @@ class HomeController extends Controller
 				$get_info[] = mess::select('id','type')->where('id', $mess_id)->get()[0];
 			}
 		}
-		return view("mess_info",compact("get_info"))->with("errors","alloted successfully");
+		return \Redirect::back();
 	}
 			
 }

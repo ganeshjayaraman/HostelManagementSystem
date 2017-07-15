@@ -44,6 +44,41 @@
 							</tr>							
 						</tbody>
 					</table>
+					
+					
+				<br />	<br />
+				@if($room_mate_list != [])
+				<div class="page-heading">ROOMATE DETAILS</div>				
+					<table class="table table-hover table-bordered" style="font-family: 'Slabo 27px', serif;">
+						<thead>
+							<tr> 
+								<th>ID</th>
+								<th>NAME</th>
+								<th>DEPARTMENT</th>
+								<th>YEAR</th>												
+								<th>PHONE NUMBER</th>
+								<th>TYPE</th>
+								<th>CITY</th>				
+							</tr>
+						</thead>
+					
+						<tbody>			
+						@foreach($room_mate_list as $r)
+							<tr>
+								<td>{{ $r->id }}</td>
+								<td>{{ $r->name }}</td>
+								<td>{{ $r->dept }}</td>
+								<td>{{ $r->year }}</td>
+								<td>{{ $r->phone_no }}</td>
+								<td>{{ $r->type }}</td>
+								<td>{{ $r->city }}</td>								
+							</tr>							
+						@endforeach
+						</tbody>
+					</table>	
+				@else
+					<div class="page-heading">SORRY YOU HAVE NO ROOM MATES ...</div>
+				@endif
 				</div>			
 					
                 </div>

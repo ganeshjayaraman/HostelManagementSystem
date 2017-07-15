@@ -1,8 +1,7 @@
 <?php
 
 namespace App;
-use App\total;
-use App\marks;
+use App\students_room_info;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -17,7 +16,7 @@ class User extends Authenticatable
 	protected $table = "users";
 	
     protected $fillable = [
-         'email', 'password','name','year','dept','address','type','phone_no','city',
+         'email', 'password','name','year','dept','address','type','phone_no','city','is_alloted',
     ];
 
     /**
@@ -29,14 +28,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-	
-	
-	public function getmarks() {
-		return $this->hasMany("App\marks","userid");
-	}
-	
-	public function gettotal(){
-		return $this->hasOne('App\total','usersid');
-	}
-	
+				
+	public function getInfo()
+    {
+        return $this->hasOne("App\students_room_info", 'student_id');
+    }
 }

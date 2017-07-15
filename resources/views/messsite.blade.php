@@ -12,7 +12,7 @@
                 <div class="panel-body">					
 				<ul class="sortable">					
 					@foreach($mess as $m)												
-							<li class='ui-state-default'>{{ $m->id }}</li>																	
+							<li class='ui-state-default' value="{{ $m->id }}">{{ $m->type }}</li>																	
 						@endforeach	
 				</ul>
                 </div>
